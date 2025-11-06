@@ -7,5 +7,5 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 def init_db():
-    from app.models import user_model  # certifique-se que importa todos os models
+    from app.models import user_model, conversation_model  # certifique-se que importa todos os models
     Base.metadata.create_all(bind=engine)

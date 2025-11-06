@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from app.database import Base
 
 class User(Base):
@@ -8,3 +9,6 @@ class User(Base):
     username = Column(String(50), unique=True)
     email = Column(String(100), unique=True)
     hashed_password = Column(String(255))
+    
+    # Relacionamento com conversas
+    conversations = relationship("Conversation", back_populates="user")
