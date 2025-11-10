@@ -18,7 +18,7 @@ def chat_with_ai(
     Args:
         message: Mensagem do usuário
         system_prompt: Prompt de sistema (opcional)
-        model: Modelo a ser usado (claude-3-5-sonnet, claude-3-opus, etc)
+        model: Modelo a ser usado
         max_tokens: Número máximo de tokens na resposta
         temperature: Criatividade da resposta (0-1)
     
@@ -66,7 +66,6 @@ def chat_with_context(
     Args:
         message: Mensagem atual do usuário
         conversation_history: Lista de mensagens anteriores
-            Formato: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]
         system_prompt: Prompt de sistema
         model: Modelo Claude a usar
     
@@ -77,7 +76,6 @@ def chat_with_context(
         if system_prompt is None:
             system_prompt = "Você é um assistente útil que responde em português."
         
-        # Claude exige que a primeira mensagem seja do usuário
         messages = []
         for msg in conversation_history:
             messages.append({
@@ -85,7 +83,6 @@ def chat_with_context(
                 "content": msg["content"]
             })
         
-        # Adiciona a mensagem atual
         messages.append({"role": "user", "content": message})
         
         response = client.messages.create(
@@ -113,9 +110,6 @@ def chat_with_context(
 def analyze_user_query(query: str) -> dict:
     """
     Analisa uma query do usuário e classifica a intenção
-    
-    Returns:
-        dict com 'intent', 'confidence' e análise
     """
     try:
         system_prompt = """Você é um analisador de intenções. 
@@ -144,21 +138,32 @@ def analyze_user_query(query: str) -> dict:
 def get_available_models() -> list:
     """
     Retorna lista de modelos Claude disponíveis
+    ATUALIZADO com os modelos corretos em Novembro 2025
     """
     return [
         {
             "id": "claude-3-5-sonnet-20241022",
-            "name": "Claude 3.5 Sonnet",
-            "description": "Mais inteligente, melhor para tarefas complexas"
+            "name": "Claude 3.5 Sonnet (Oct 2024)",
+            "description": "Modelo mais recente e inteligente"
         },
         {
             "id": "claude-3-5-haiku-20241022", 
-            "name": "Claude 3.5 Haiku",
+            "name": "Claude 3.5 Haiku (Oct 2024)",
             "description": "Mais rápido e econômico"
         },
         {
             "id": "claude-3-opus-20240229",
             "name": "Claude 3 Opus",
             "description": "Modelo anterior de alta performance"
+        },
+        {
+            "id": "claude-3-sonnet-20240229",
+            "name": "Claude 3 Sonnet",
+            "description": "Versão anterior do Sonnet"
+        },
+        {
+            "id": "claude-3-haiku-20240307",
+            "name": "Claude 3 Haiku",
+            "description": "Versão anterior do Haiku"
         }
     ]
